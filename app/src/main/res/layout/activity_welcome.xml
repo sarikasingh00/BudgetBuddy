@@ -4,29 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#253481"
+    android:background="#2E3D80"
     android:orientation="vertical"
     tools:context=".Welcome">
 
-    <Button
-        android:id="@+id/button2"
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="200" />
+
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:src="@drawable/logo1"
+        android:tint="#00000000" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="250" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="358dp"
-        tools:text="Sup3" />
-
-    <Button
-        android:id="@+id/button3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:text="Sign In"
+        android:textAllCaps="false"
+        android:textSize="18" />
 
 </LinearLayout>
