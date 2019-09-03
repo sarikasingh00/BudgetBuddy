@@ -10,7 +10,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="200" />
+        android:layout_height="200px" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -21,15 +21,11 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="250" />
+        android:layout_height="250px" />
 
-    <Button
-        android:id="@+id/button"
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:text="Sign In"
-        android:textAllCaps="false"
-        android:textSize="18" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
