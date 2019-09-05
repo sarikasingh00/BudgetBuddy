@@ -141,4 +141,31 @@ public class Welcome extends AppCompatActivity {
                     }
                 });
     }
+        // Build a GoogleSignInClient with the options specified by gso.
+        /*mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        signInButton.setOnClickListener(this);
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        // Check for existing Google Sign In account, if the user is already signed in
+// the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+       // updateUI(account); //write func
+    }
+
+    public void onClick(View v){
+        switch (v.getId()) {
+            case R.id.sign_in_button:
+                signIn();
+                break;
+        }
+    }
+
+    private void signIn(){
+        Intent signInIntent= Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
+        startActivityForResult(signInIntent,RC_SIGN_IN);
+    }
+*/
 }
+
