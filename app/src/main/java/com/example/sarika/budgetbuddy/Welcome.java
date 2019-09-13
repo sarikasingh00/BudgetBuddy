@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 //import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,12 +33,14 @@ public class Welcome extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN=9001;
     private static final String TAG = "GoogleActivity";
+    Button continueAs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         signInButton=findViewById(R.id.sign_in_button);
+        continueAs= (Button)findViewById(R.id.continueAs);
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -46,6 +49,23 @@ public class Welcome extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
+
+        continueAs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent goToSecond= new Intent();
+                goToSecond.setClass(getApplicationContext(),Screen1.class);
+                startActivity(goToSecond);
+                //go to next activity
+            }
+        });
     }
 
     @Override
@@ -56,40 +76,12 @@ public class Welcome extends AppCompatActivity {
         updateUI(currentUser);
     }
 
-    /*private void signOut() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        updateUI(null);
-                    }
-                });
-    }*/
     private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            Intent goToSecond= new Intent();
-            goToSecond.setClass(this,Screen1.class);
-            startActivity(goToSecond);
-            //go to next activity
-        } else {
-            //sign in
-            signIn();
+        if (user != null) { //can do continue as xyz->
+            signInButton.setVisibility(View.INVISIBLE);
+            continueAs.setVisibility(View.VISIBLE);
+            continueAs.setText("Continue as "+user.getDisplayName());
         }
-    }
-
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.sign_in_button) {
-            signIn();
-        }
-        /*else if (i == R.id.signOutButton) {
-            signOut();
-        }
-        */
     }
 
     private void signIn() {
@@ -141,31 +133,27 @@ public class Welcome extends AppCompatActivity {
                     }
                 });
     }
-        // Build a GoogleSignInClient with the options specified by gso.
-        /*mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        signInButton.setOnClickListener(this);
+    /*private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-// the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-       // updateUI(account); //write func
-    }
-
-    public void onClick(View v){
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                signIn();
-                break;
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        updateUI(null);
+                    }
+                });
+    }*/
+       /* public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.sign_in_button) {
+            signIn();
         }
-    }
+        else if (i == R.id.signOutButton) {
+            signOut();
+        }
 
-    private void signIn(){
-        Intent signInIntent= Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
-        startActivityForResult(signInIntent,RC_SIGN_IN);
-    }
-*/
+    }*/
 }
-
