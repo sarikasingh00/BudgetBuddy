@@ -61,7 +61,7 @@ public class Welcome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent goToSecond= new Intent();
-                goToSecond.setClass(getApplicationContext(),Screen1.class);
+                goToSecond.setClass(getApplicationContext(),HomeScreen.class);
                 startActivity(goToSecond);
                 //go to next activity
             }
@@ -77,7 +77,7 @@ public class Welcome extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        if (user != null) { //can do continue as xyz->
+        if (user != null) {
             signInButton.setVisibility(View.INVISIBLE);
             continueAs.setVisibility(View.VISIBLE);
             continueAs.setText("Continue as "+user.getDisplayName());
