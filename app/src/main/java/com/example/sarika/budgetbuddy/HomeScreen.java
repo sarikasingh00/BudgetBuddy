@@ -2,6 +2,7 @@ package com.example.sarika.budgetbuddy;
 
 import android.os.Bundle;
 
+import com.example.sarika.budgetbuddy.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -20,10 +21,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
 
 public class HomeScreen extends AppCompatActivity {
 
+    private String Uid;
     private AppBarConfiguration mAppBarConfiguration;
+    //TextView Uid_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +49,13 @@ public class HomeScreen extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_add, R.id.nav_edit,
-                R.id.nav_delete, R.id.nav_sign_out)
+                R.id.nav_delete, R.id.nav_sign_out,R.id.nav_test)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        //display contents
     }
 
     @Override

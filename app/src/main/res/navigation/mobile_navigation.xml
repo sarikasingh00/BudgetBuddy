@@ -40,4 +40,9 @@
         android:name="com.example.sarika.budgetbuddy.ui.send.SendFragment"
         android:label="Send"
         tools:layout="@layout/fragment_send" />
+    <fragment
+        android:id="@+id/nav_test"
+        android:name="com.example.sarika.budgetbuddy.ui.test.TestFragment"
+        android:label="Test"
+        tools:layout="@layout/fragment_test" />
 </navigation>

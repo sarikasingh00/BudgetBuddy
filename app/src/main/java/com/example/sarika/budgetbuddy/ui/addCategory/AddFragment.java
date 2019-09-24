@@ -11,12 +11,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sarika.budgetbuddy.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AddFragment extends Fragment {
 
     private AddViewModel mViewModel;
+    private TextView nameCategory;
+    private TextView budgetAmount;
+    private Button addButton;
+    private TextView AddText;
 
     public static AddFragment newInstance() {
         return new AddFragment();
@@ -35,4 +43,26 @@ public class AddFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    public void onViewCreated(View view,Bundle savedInstanceState){
+        nameCategory=view.findViewById(R.id.category_name);
+        budgetAmount=view.findViewById(R.id.budget_amount);
+        addButton=view.findViewById(R.id.add_button);
+        AddText=view.findViewById(R.id.AddCategory);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //AddText.setText("In on start");
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String cat_name= nameCategory.getText().toString();
+                int budget= Integer.parseInt(budgetAmount.getText().toString());
+                //AddText.setText("values extracted");
+                //Toast.makeText(this, "no issur in button",Toast.LENGTH_LONG).show();
+                mViewModel.addData(cat_name,budget);
+            }
+        });
+    }
 }

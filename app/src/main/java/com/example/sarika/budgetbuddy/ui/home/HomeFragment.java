@@ -17,6 +17,7 @@ import com.example.sarika.budgetbuddy.R;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private TextView Uid_text;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,5 +32,16 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    public void onViewCreated(View view,Bundle savedInstanceState){
+        Uid_text=view.findViewById(R.id.Uid_text);
+        Uid_text.setText("testing");
+    }
+
+    public void onStart(){
+        super.onStart();
+        Uid_text.setText(homeViewModel.Uid);
+
     }
 }
