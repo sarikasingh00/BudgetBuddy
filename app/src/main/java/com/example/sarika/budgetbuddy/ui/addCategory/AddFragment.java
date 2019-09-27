@@ -59,11 +59,12 @@ public class AddFragment extends Fragment {
             public void onClick(View view) {
                 String cat_name= nameCategory.getText().toString();
                 int budget= Integer.parseInt(budgetAmount.getText().toString());
-                //AddText.setText("values extracted");
-                //Toast.makeText(this, "no issur in button",Toast.LENGTH_LONG).show();
                 mViewModel.addData(cat_name,budget);
+               // if(mViewModel.addSuccess) {
                 nameCategory.setText("");
                 budgetAmount.setText("");
+                Toast.makeText(getActivity(), "Category Added!",Toast.LENGTH_LONG).show();
+                //}
             }
         });
     }
