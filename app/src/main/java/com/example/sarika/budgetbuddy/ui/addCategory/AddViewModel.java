@@ -24,6 +24,7 @@ public class AddViewModel extends ViewModel {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private static final String TAG = "DocSnippets";
+    public boolean addSuccess;
 
     public AddViewModel() {
         //mText = new MutableLiveData<>();
@@ -42,12 +43,14 @@ public class AddViewModel extends ViewModel {
                     public void onSuccess(Void aVoid) {
                         //Toast.makeText(this,"Successfully added",Toast.LENGTH_LONG).show();
                         Log.d(TAG, "DocumentSnapshot successfully written!");
+                        addSuccess=true;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error writing document", e);
+                        addSuccess=false;
                     }
                 });
 

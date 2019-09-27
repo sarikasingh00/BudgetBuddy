@@ -62,6 +62,8 @@ public class AddFragment extends Fragment {
                 //AddText.setText("values extracted");
                 //Toast.makeText(this, "no issur in button",Toast.LENGTH_LONG).show();
                 mViewModel.addData(cat_name,budget);
+                nameCategory.setText("");
+                budgetAmount.setText("");
             }
         });
     }
