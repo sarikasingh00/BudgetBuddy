@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Users\\Sarika\\.android\\debug.keystore')
+            storeFile file('C:\\Users\\yashc\\.android\\debug.keystore')
             storePassword 'android'
             keyAlias = 'AndroidDebugKey'
             keyPassword 'android'
