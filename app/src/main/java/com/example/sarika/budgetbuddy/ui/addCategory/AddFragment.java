@@ -83,7 +83,7 @@ public class AddFragment extends Fragment {
         addButton=view.findViewById(R.id.add_button);
         AddText=view.findViewById(R.id.AddCategory);
     }
-
+//TODO invalid null input
     @Override
     public void onStart() {
         super.onStart();

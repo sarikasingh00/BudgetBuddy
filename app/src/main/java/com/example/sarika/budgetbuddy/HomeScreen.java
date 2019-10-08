@@ -1,5 +1,6 @@
 package com.example.sarika.budgetbuddy;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.sarika.budgetbuddy.ui.home.HomeFragment;
@@ -41,6 +42,9 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent goToExpense = new Intent();
+                goToExpense.setClass(getApplicationContext(),AddExpense.class);
+                startActivity(goToExpense);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
