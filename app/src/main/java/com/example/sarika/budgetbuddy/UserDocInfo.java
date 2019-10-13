@@ -12,6 +12,12 @@ public final class UserDocInfo {
         this.expense=expense;
     }
 
+    public  UserDocInfo(String categoryName, long budget, long expense){
+        this.categoryName=categoryName;
+        this.budget=(int)budget;
+        this.expense=(int)expense;
+    }
+
     public String getCategoryName(){
         return categoryName;
     }

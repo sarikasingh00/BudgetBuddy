@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class AddExpense extends AppCompatActivity {
     private TextView spent;
     private Spinner spinner;
     private Button add;
+    private ProgressBar progressBar;
     private static final String TAG = "DocSnippets";
     private String[] categories;
 
@@ -54,6 +56,7 @@ public class AddExpense extends AppCompatActivity {
         spent = findViewById(R.id.spentAmount);
         spinner = findViewById(R.id.spinner);
         add = findViewById(R.id.addExpButton);
+        progressBar=findViewById(R.id.progressBar);
 
         db.collection("Users").document(Uid).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -104,6 +107,7 @@ public class AddExpense extends AppCompatActivity {
         //making spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
         spinner.setAdapter(adapter);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     public void addExpense(String desc, final int amount, final String category) {

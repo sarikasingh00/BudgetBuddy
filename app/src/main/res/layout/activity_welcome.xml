@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E3D80"
+    android:background="#081142"
     tools:context=".Welcome">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo1"
+        android:src="@drawable/logo2"
         android:tint="#00000000"
         app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39" />
+        app:layout_constraintVertical_bias="0.39"
+        app:srcCompat="@drawable/logo2" />
 
 
     <com.google.android.gms.common.SignInButton
@@ -24,7 +25,10 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="false"
-        app:layout_constraintBottom_toTopOf="@+id/continueAs" />
+        app:layout_constraintBottom_toBottomOf="@+id/continueAs"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.935"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/continueAs"
@@ -33,6 +37,9 @@
         android:background="@android:color/white"
         android:textAllCaps="false"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class AddFragment extends Fragment {
     private TextView budgetAmount;
     private Button addButton;
     private TextView AddText;
+    //private ProgressBar progressBar;
     FirebaseFirestore db;
     DocumentSnapshot document;
     private static final String TAG = "DocSnippets";
@@ -64,6 +66,7 @@ public class AddFragment extends Fragment {
         mViewModel.getBool().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
+                //progressBar.setVisibility(View.INVISIBLE);
                 if(aBoolean==true){
                     Toast.makeText(getActivity(), "Category already exists", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "In cat exists");
@@ -82,6 +85,7 @@ public class AddFragment extends Fragment {
         budgetAmount=view.findViewById(R.id.budget_amount);
         addButton=view.findViewById(R.id.add_button);
         AddText=view.findViewById(R.id.AddCategory);
+        //progressBar=view.findViewById(R.id.progressBar);
     }
 //TODO invalid null input
     @Override

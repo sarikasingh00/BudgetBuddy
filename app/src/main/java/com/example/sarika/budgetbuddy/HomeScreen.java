@@ -40,8 +40,8 @@ public class HomeScreen extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                   //     .setAction("Action", null).show();
                 Intent goToExpense = new Intent();
                 goToExpense.setClass(getApplicationContext(),AddExpense.class);
                 startActivity(goToExpense);

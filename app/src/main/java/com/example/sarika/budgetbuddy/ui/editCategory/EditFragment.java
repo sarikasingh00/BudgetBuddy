@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class EditFragment extends Fragment {
     private TextView edittext;
     private Button updatebutton;
     private Spinner spinner;
+    private ProgressBar progressBar;
     String spinnertext;
 
     public static EditFragment newInstance() {
@@ -56,6 +58,7 @@ public class EditFragment extends Fragment {
         mViewModel.getCat().observe(getViewLifecycleOwner(), new Observer<String[]>() {
             @Override
             public void onChanged(String[] strings) {
+                progressBar.setVisibility(View.INVISIBLE);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_dropdown_item, mViewModel.cat.getValue());
                 spinner.setAdapter(adapter);
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -81,6 +84,7 @@ public class EditFragment extends Fragment {
         edittext = view.findViewById(R.id.EditCategory);
         updatebutton = view.findViewById(R.id.update_button);
         spinner = view.findViewById(R.id.spinner1);
+        progressBar=view.findViewById(R.id.progressBar2);
     }
 
     public void onStart() {

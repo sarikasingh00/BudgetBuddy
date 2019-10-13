@@ -2,6 +2,7 @@ package com.example.sarika.budgetbuddy.ui.signOut;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.sarika.budgetbuddy.R;
+import com.example.sarika.budgetbuddy.Welcome;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SignOutFragment extends Fragment {
 
@@ -35,4 +38,12 @@ public class SignOutFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().signOut();
+        Intent goToWelcome= new Intent(getActivity(), Welcome.class);
+        goToWelcome.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goToWelcome);
+    }
 }

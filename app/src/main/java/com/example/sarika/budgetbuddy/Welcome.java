@@ -73,6 +73,7 @@ public class Welcome extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        Log.d(TAG,"mauth"+currentUser);
         updateUI(currentUser);
     }
 
@@ -132,6 +133,25 @@ public class Welcome extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    public  void onResume(){
+        super.onResume();
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        updateUI(null);
+                    }
+                });
+        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        Log.d(TAG,"i on reastart");
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mAuth=FirebaseAuth.getInstance();
+         */
+
     }
     /*private void signOut() {
         // Firebase sign out

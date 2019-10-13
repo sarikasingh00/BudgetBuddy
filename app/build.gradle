@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         debug {
-            storeFile file('C:\\Users\\yashc\\.android\\debug.keystore')
+            storeFile file('C:\\Users\\Sarika\\.android\\debug.keystore')
             storePassword 'android'
             keyAlias = 'AndroidDebugKey'
             keyPassword 'android'
@@ -49,5 +49,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.0.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.firebase:firebase-firestore:21.1.1'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 
 }
