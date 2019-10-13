@@ -102,7 +102,7 @@ class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewH
         holder.progressBar.setMax(mList.get(position).getBudget());
         holder.progressBar.setProgress(mList.get(position).getExpense());
         holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-        holder.percent.setText((mList.get(position).getExpense()/mList.get(position).getBudget())*100.00+"%");
+        holder.percent.setText((mList.get(position).getExpense()*100.00/mList.get(position).getBudget())+"%");
         if(mList.get(position).getExpense() > mList.get(position).getBudget())
             holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
     }

@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.sarika.budgetbuddy.UserDocInfo;
+import com.example.sarika.budgetbuddy.ui.DataRetrieval;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +32,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public class EditViewModel extends ViewModel {
+public class EditViewModel extends ViewModel implements DataRetrieval {
     // TODO: Implement the ViewModel
     MutableLiveData<String[]> cat;
     public String Uid;

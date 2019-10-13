@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.sarika.budgetbuddy.UserDocInfo;
+import com.example.sarika.budgetbuddy.ui.DataRetrieval;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
 
-public class DeleteViewModel extends ViewModel {
+public class DeleteViewModel extends ViewModel implements DataRetrieval {
 
     MutableLiveData<String[]> cat;
     public String Uid;
