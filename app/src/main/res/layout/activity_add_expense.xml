@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="Enter Expense Details"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="20sp"
+        android:textSize="28dp"
         app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,11 +59,13 @@
 
     <Button
         android:id="@+id/addExpButton"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="Add Expense"
         android:textAllCaps="false"
         android:textSize="14sp"
+        android:background="@drawable/rounded_button"
+        android:textColor="#ffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
