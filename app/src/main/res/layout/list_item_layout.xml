@@ -3,7 +3,7 @@
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
+    android:padding="15dp"
     android:theme="@style/CardView.Dark">
 
 
@@ -22,7 +22,7 @@
         android:layout_below="@+id/category_name"
         android:text="testing view1"
         android:textColor="@android:color/tertiary_text_dark"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/expense"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/budget"
         android:text="testing view2"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -38,14 +38,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/expense"
-        android:padding="10dp" />
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/percent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:layout_below="@+id/progress_bar"
-        android:layout_alignRight="@id/progress_bar"/>
+        android:layout_alignRight="@id/progress_bar"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progress_bar"
+        android:layout_alignLeft="@+id/progress_bar" />
 
 </RelativeLayout>

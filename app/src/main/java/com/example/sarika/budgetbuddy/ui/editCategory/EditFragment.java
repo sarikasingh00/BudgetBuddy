@@ -93,10 +93,15 @@ public class EditFragment extends Fragment {
         updatebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int budgettoupdate = Integer.parseInt(updatebudget.getText().toString());
-                mViewModel.updateData(spinnertext, budgettoupdate);
-                updatebudget.setText("");
-                Toast.makeText(getActivity(), "Category Updated!",Toast.LENGTH_LONG).show();
+                int budgettoupdate =0;
+                if(updatebudget.getText().toString().trim().equals(""))
+                    Toast.makeText(getActivity(), "Please enter a valid amount",Toast.LENGTH_LONG).show();
+                else {
+                    budgettoupdate=Integer.parseInt(updatebudget.getText().toString().trim());
+                    mViewModel.updateData(spinnertext, budgettoupdate);
+                    updatebudget.setText("");
+                    Toast.makeText(getActivity(), "Category Updated!",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

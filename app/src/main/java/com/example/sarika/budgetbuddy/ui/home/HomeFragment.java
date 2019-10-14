@@ -1,6 +1,8 @@
 package com.example.sarika.budgetbuddy.ui.home;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +23,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sarika.budgetbuddy.HomeScreen;
+import com.example.sarika.budgetbuddy.LogActivity;
 import com.example.sarika.budgetbuddy.R;
 import com.example.sarika.budgetbuddy.UserDocInfo;
 
@@ -95,16 +99,32 @@ class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeRecyclerAdapter.ViewHolder holder, final int position) {
         holder.categoryName.setText(mList.get(position).getCategoryName());
         holder.budget.setText("Budget: "+mList.get(position).getBudget());
         holder.expense.setText("Expense: "+mList.get(position).getExpense()+"");
         holder.progressBar.setMax(mList.get(position).getBudget());
         holder.progressBar.setProgress(mList.get(position).getExpense());
-        holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
-        holder.percent.setText((mList.get(position).getExpense()*100.00/mList.get(position).getBudget())+"%");
-        if(mList.get(position).getExpense() > mList.get(position).getBudget())
-            holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+        //holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+        double percent=mList.get(position).getExpense()*100.00/mList.get(position).getBudget();
+        //holder.percent.setText((mList.get(position).getExpense()*100.00/mList.get(position).getBudget())+"%");
+        holder.percent.setText(String.format("%.2f",percent)+"%");
+        if(mList.get(position).getExpense() < mList.get(position).getBudget())
+            holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+        else
+            holder.warning.setText("You have exceeded your budget!");
+
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(mContext,LogActivity.class);
+                //intent.setClass((mContext,LogActivity.class)
+                intent.putExtra("categoryName",mList.get(position).getCategoryName());
+                //startActivity(intent);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -115,7 +135,7 @@ class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewH
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView categoryName, budget, expense,percent;
+        TextView categoryName, budget, expense,percent,warning;
         RelativeLayout parentLayout;
         ProgressBar progressBar;
         public ViewHolder(@NonNull View itemView) {
@@ -126,6 +146,7 @@ class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewH
             parentLayout=itemView.findViewById(R.id.parent_layout);
             progressBar=itemView.findViewById(R.id.progress_bar);
             percent=itemView.findViewById(R.id.percent);
+            warning=itemView.findViewById(R.id.warning);
         }
     }
 }

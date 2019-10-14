@@ -87,7 +87,6 @@ public class AddFragment extends Fragment {
         AddText=view.findViewById(R.id.AddCategory);
         //progressBar=view.findViewById(R.id.progressBar);
     }
-//TODO invalid null input
     @Override
     public void onStart() {
         super.onStart();
@@ -95,22 +94,20 @@ public class AddFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String cat_name = nameCategory.getText().toString();
-                int budget = Integer.parseInt(budgetAmount.getText().toString());
-                //AddText.setText("before if");
-                mViewModel.addData(cat_name, budget);
-                Log.d(TAG,"flag val"+mViewModel.flag);
-                /*if (mViewModel.flag) {
-                    Log.d(TAG, "In cat exists");
-                    Toast.makeText(getActivity(), "Category already exists", Toast.LENGTH_LONG).show();
-                } else {
-                    Log.d(TAG, "In cat doeanst exists");
-                    Toast.makeText(getActivity(), "Category Added!", Toast.LENGTH_LONG).show();
+                String cat_name = nameCategory.getText().toString().trim();
+                //if(cat_name.equals(""))
+                   // Toast.makeText(getActivity(),"Please enter a valid category name",Toast.LENGTH_LONG).show();
+                int budget=0;
+                if(budgetAmount.getText().toString().trim().equals("") || cat_name.equals("")) {
+                    Toast.makeText(getActivity(), "Please enter valid data", Toast.LENGTH_LONG).show();
                 }
-
-                 */
-                nameCategory.setText("");
-                budgetAmount.setText("");
+                else {
+                    budget = Integer.parseInt(budgetAmount.getText().toString().trim());
+                    mViewModel.addData(cat_name, budget);
+                    nameCategory.setText("");
+                    budgetAmount.setText("");
+                }
+                Log.d(TAG,"flag val"+mViewModel.flag);
             }
             });
     }
