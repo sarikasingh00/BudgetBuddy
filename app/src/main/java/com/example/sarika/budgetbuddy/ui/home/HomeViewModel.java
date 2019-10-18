@@ -50,7 +50,7 @@ public class HomeViewModel extends ViewModel {
                             DocumentSnapshot documentSnap = task.getResult();
                             if (documentSnap.exists()) {
                                 Map<String, Object> map = documentSnap.getData();
-                                Log.d("doc","map="+map);
+                                Log.d("doc in get data","map="+map);
                                 for(String key :map.keySet()){
                                     Log.d("Doc","map class="+map.get(key));
                                     //localList.add((UserDocInfo)map.get(key));
@@ -62,6 +62,9 @@ public class HomeViewModel extends ViewModel {
                                 list.setValue(localList);
                             } else {
                                 Log.d(TAG, "No such document");
+                                db.collection("Users").document(Uid).set(new HashMap<Object,String>());
+                                getData();
+                                //list.setValue(null);
                             }
                         } else {
                             Log.d(TAG, "get failed with ", task.getException());
