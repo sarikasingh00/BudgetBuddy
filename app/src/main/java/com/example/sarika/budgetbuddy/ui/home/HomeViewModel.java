@@ -25,15 +25,12 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class HomeViewModel extends ViewModel {
 
-   // private MutableLiveData<String> mText;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String Uid;
     private MutableLiveData<List<UserDocInfo>> list;
 
     public HomeViewModel() {
-        //mText = new MutableLiveData<>();
-        //mText.setValue("This is home fragment");
         mAuth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         Uid=mAuth.getUid();
@@ -77,7 +74,4 @@ public class HomeViewModel extends ViewModel {
         //Log.d("home view model",list+"");
         return list;
     }
-   // public LiveData<String> getText() {
-        //return mText;
-    //}
 }

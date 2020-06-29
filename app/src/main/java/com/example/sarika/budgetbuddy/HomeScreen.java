@@ -102,7 +102,7 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.action_refresh) {
-            Toast.makeText(getApplicationContext(), "Refreshed your expense log.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Erased your expense log.", Toast.LENGTH_LONG).show();
             DocumentReference doc = db.document("/Users/" + Uid);
             doc.get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

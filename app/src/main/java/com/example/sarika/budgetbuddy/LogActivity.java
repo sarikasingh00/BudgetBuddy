@@ -24,12 +24,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +68,14 @@ public class LogActivity extends AppCompatActivity {
         super.onStart();
         mDesc=new ArrayList<>();
         mAmount=new ArrayList<>();
-        db.collection("Users").document(Uid).collection("Categories").document(categoryName)
+        db.collection("Users").document(Uid).collection("Categories").document(String.valueOf(FieldPath.of(categoryName)))
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     Map<String, Object> map = doc.getData();
+                    Log.d("Log",map + "");
                     for (String key : map.keySet()) {
                         if (key.equals("Budget") || key.equals("Category name") || key.equals("Expense"))
                             continue;
@@ -136,16 +141,50 @@ class LogRecylcerAdapter extends RecyclerView.Adapter<LogRecylcerAdapter.ViewHol
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("Log activity","in yes");
                         String name=desc.get(position);
-                        int amt=Integer.parseInt(spent.get(position));
+                        final int amt=Integer.parseInt(spent.get(position));
                         FirebaseAuth auth=FirebaseAuth.getInstance();
-                        String Uid=auth.getUid();
+                        final String Uid=auth.getUid();
                         FirebaseFirestore db=FirebaseFirestore.getInstance();
                         Toast.makeText(view.getContext(), "Deleted "+desc.get(position), Toast.LENGTH_SHORT).show();
                         desc.remove(position);
                         spent.remove(position);
-                        db.collection("Users").document(Uid).update(categoryName+".expense", FieldValue.increment(-amt));
-                        db.collection("Users").document(Uid).collection("Categories").document(categoryName).update(name,FieldValue.delete());
-                        db.collection("Users").document(Uid).collection("Categories").document(categoryName).update("Expense",FieldValue.increment(-amt));
+                        final FirebaseFirestore final_db = db;
+//                        db.collection("Users").document(Uid).update(FieldPath.of(categoryName)+".expense", FieldValue.increment(-amt)); //error line
+                        db.collection("Users").document(Uid).collection("Categories").document(String.valueOf(FieldPath.of(categoryName))).update(FieldPath.of(name),FieldValue.delete());
+                        db.collection("Users").document(Uid).collection("Categories").document(String.valueOf(FieldPath.of(categoryName))).update("Expense",FieldValue.increment(-amt));
+
+                        db.collection("Users").document(Uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot documentSnap = task.getResult();
+                                    if (documentSnap.exists()) {
+                                        Log.d(TAG, "DocumentSnapshot data: naya " + documentSnap.getData());
+                                        Log.d(TAG, "DocumentSnapshot data: naya " + documentSnap.get(FieldPath.of(categoryName)));
+                                        Map<String, Object> inner= (Map<String,Object>)documentSnap.get(FieldPath.of(categoryName));
+                                        inner.put("expense", String.valueOf((long)inner.get("expense") - amt));
+                                        UserDocInfo user = new UserDocInfo(inner.get("categoryName").toString(), Integer.parseInt(inner.get("budget").toString()), Integer.parseInt(inner.get("expense").toString()));
+                                        Log.d(TAG, "DocumentSnapshot data: naya " + inner);
+                                        final_db.collection("Users").document(Uid).update(
+                                                FieldPath.of(categoryName), user
+                                        )
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error writing document", e);
+                                                    }
+                                                });
+                                    }
+                                }
+                            }
+                        });
+
                         notifyDataSetChanged();
                         //new LogActivity().updateUI();
                         //update list

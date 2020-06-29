@@ -19,6 +19,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -95,13 +96,13 @@ public class AddViewModel extends ViewModel {
                         Log.d(TAG, "No such document");
                         //db.collection("Users").document(Uid).set(new HashMap<String,Object>());
                         Map<String, Object> category = new HashMap<>();
-                        category.put("Category name", catName);
+                        category.put("Category name", String.valueOf(FieldPath.of(catName)));
                         category.put("Budget", catBudget);
                         category.put("Expense", 0);
                         UserDocInfo user = new UserDocInfo(catName, catBudget, 0);
                         Map<String, UserDocInfo> userDoc = new HashMap<>();
                         userDoc.put(catName, user);
-                        db.collection("Users").document(Uid).collection("Categories").document(catName).set(category, SetOptions.merge())
+                        db.collection("Users").document(Uid).collection("Categories").document(String.valueOf(FieldPath.of(catName))).set(category, SetOptions.merge())
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -167,7 +168,7 @@ public class AddViewModel extends ViewModel {
             UserDocInfo user = new UserDocInfo(name, budget, 0);
             Map<String, UserDocInfo> userDoc = new HashMap<>();
             userDoc.put(name, user);
-            db.collection("Users").document(Uid).collection("Categories").document(name).set(category, SetOptions.merge())
+            db.collection("Users").document(Uid).collection("Categories").document(String.valueOf(FieldPath.of(name))).set(category, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

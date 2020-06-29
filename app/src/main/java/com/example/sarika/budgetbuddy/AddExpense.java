@@ -1,6 +1,5 @@
 package com.example.sarika.budgetbuddy;
 
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,16 +19,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class AddExpense extends AppCompatActivity {
 
@@ -102,7 +98,6 @@ public class AddExpense extends AppCompatActivity {
             }
         });
     }
-
     public void makeSpinner() {
         //making spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
@@ -117,7 +112,7 @@ public class AddExpense extends AppCompatActivity {
         map.put(desc, amount);
 
         //Writing the exp in categories collection document
-        db.collection("Users").document(Uid).collection("Categories").document(category)
+        db.collection("Users").document(Uid).collection("Categories").document(String.valueOf(FieldPath.of(category)))
                 .set(map, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -134,8 +129,8 @@ public class AddExpense extends AppCompatActivity {
             }
         });
 
-        //Computing total exp in a categry
-        db.document("/Users/" + Uid + "/Categories/" + category).get()
+        //Computing total exp in a category
+        db.document("/Users/" + Uid + "/Categories/" + FieldPath.of(category)).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -153,10 +148,42 @@ public class AddExpense extends AppCompatActivity {
                                     else
                                         exp+= (Long)map.get(key);
                                 }
-                                Log.d(TAG,"expense tot"+exp);
+                                Log.d(TAG,"expense tot"+ exp);
+                                final int final_exp = exp;
                                 //Updating the final expense total in both record places
-                                db.document("/Users/" + Uid + "/Categories/" + category).update("Expense",exp);
-                                db.document("/Users/" + Uid).update(category+".expense",exp);
+                                db.document("/Users/" + Uid + "/Categories/" + String.valueOf(FieldPath.of(category))).update("Expense",exp);
+//                                db.document("/Users/" + Uid).update(String.valueOf(FieldPath.of(category))+".expense",exp);
+                                db.collection("Users").document(Uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot documentSnap = task.getResult();
+                                            if (documentSnap.exists()) {
+                                                Log.d(TAG, "DocumentSnapshot data: naya " + documentSnap.getData());
+                                                Log.d(TAG, "DocumentSnapshot data: naya " + documentSnap.get(FieldPath.of(category)));
+                                                Map<String, Object> inner= (Map<String,Object>)documentSnap.get(FieldPath.of(category));
+                                                inner.put("expense", String.valueOf(final_exp));
+                                                UserDocInfo user = new UserDocInfo(inner.get("categoryName").toString(), Integer.parseInt(inner.get("budget").toString()), Integer.parseInt(inner.get("expense").toString()));
+                                                Log.d(TAG, "DocumentSnapshot data: naya " + inner);
+                                                db.collection("Users").document(Uid).update(
+                                                        FieldPath.of(category), user
+                                                )
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.w(TAG, "Error writing document", e);
+                                                            }
+                                                        });
+                                            }
+                                        }
+                                    }
+                                });
                             }
                         }
                     }

@@ -20,11 +20,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.squareup.okhttp.internal.Internal;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -49,70 +51,6 @@ public class EditViewModel extends ViewModel implements DataRetrieval {
         db=FirebaseFirestore.getInstance();
     }
 
-    /*public String[] getData(){
-        db.collection("Users").document(Uid).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    int i=0;
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()) {
-                            Map<String, Object> getcat = documentSnapshot.getData();
-                            for(Map.Entry<String, Object> m : getcat.entrySet())
-                            {
-                                cat[i] = m.getKey();
-                                i++;
-                            }
-                        }
-                        else{
-                            Log.d(TAG, "DocumentSnapshot not successful!");
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error reading document", e);
-                    }
-                });
-        return cat;
-    }*/
-
-    /*public int getexpense(final String name){
-        DocumentReference ref = db.document("/Users/" +Uid);
-        ref.get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if(documentSnapshot.exists()){
-                                Map<String, Object> map;
-                                map = documentSnapshot.getData();
-                                expense = findexpense(map, name);
-                            }
-                            else{
-                                Log.d(TAG, "No such document");
-                            }
-                        }
-                        else{
-                            Log.d(TAG, "get failed with", task.getException());
-                        }
-                    }
-                });
-        return expense;
-    }*/
-
-    /*public int findexpense(Map<String, Object> map, String name){
-        Log.d("Doc","map="+map);
-        for(Map.Entry<String, Object> m : map.entrySet()) {
-            if (name.equals(m.getKey())) {
-                user = (UserDocInfo) m.getValue();
-            }
-        }
-        Log.d(TAG, "expense: "+user.getExpense());
-        return user.getExpense();
-    }*/
-
 
     public void getData(){
         DocumentReference ref = db.document("/Users/" +Uid);
@@ -129,6 +67,7 @@ public class EditViewModel extends ViewModel implements DataRetrieval {
                                 for(int i=0;i<cat1.length;i++)
                                     Log.d("Doc","cat1="+cat1[i]);
                                 cat.setValue(cat1);
+                                Log.d("Doc","mutable cat=" + cat.getValue());
                             }
                             else{
                                 Log.d(TAG, "No such document");
@@ -159,14 +98,16 @@ public class EditViewModel extends ViewModel implements DataRetrieval {
     }
 
     public MutableLiveData<String[]> getCat() {
+        Log.d("Doc","mutable cat=" + cat.getValue());
         return cat;
     }
 
-    public void updateData(String name, int budget){
+    public void updateData(final String name, final int budget){
         Map<String, Object> map = new HashMap<>();
         map.put("Category name", name);
         map.put("Budget", budget);
-        db.collection("Users").document(Uid).collection("Categories").document(name).update(map)
+        Log.d("Doc","map in updateDAta=" + map);
+        db.collection("Users").document(Uid).collection("Categories").document(String.valueOf(FieldPath.of(name))).update(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -179,21 +120,40 @@ public class EditViewModel extends ViewModel implements DataRetrieval {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
-        db.collection("Users").document(Uid).update(
-            name+".budget", budget
-        )
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
+
+        db.collection("Users").document(Uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnap = task.getResult();
+                    if (documentSnap.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: naya " + documentSnap.getData());
+                        Log.d(TAG, "DocumentSnapshot data: naya " + documentSnap.get(FieldPath.of(name)));
+                        Map<String, Object> inner= (Map<String,Object>)documentSnap.get(FieldPath.of(name));
+                        inner.put("budget", String.valueOf(budget));
+                        user = new UserDocInfo(inner.get("categoryName").toString(), Integer.parseInt(inner.get("budget").toString()), Integer.parseInt(inner.get("expense").toString()));
+                        Log.d(TAG, "DocumentSnapshot data: naya " + inner);
+                        db.collection("Users").document(Uid).update(
+                                FieldPath.of(name), user
+                        )
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error writing document", e);
+                                    }
+                                });
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
+                }
+            }
+        });
+
+
     }
 }
 

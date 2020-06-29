@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -118,7 +119,7 @@ public class DeleteFragment extends Fragment {
 
                 final String str = spinnertext;
                 DocumentReference doc = FirebaseFirestore.getInstance().document("/Users/"+Uid);
-                doc.collection("Categories").document(str).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                doc.collection("Categories").document(String.valueOf(FieldPath.of(str))).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(getContext(), str+" Deleted", Toast.LENGTH_SHORT).show();
@@ -126,9 +127,10 @@ public class DeleteFragment extends Fragment {
 
                     }
                 });
-                Map<String,Object> updates= new HashMap<>();
-                updates.put(str, FieldValue.delete());
-                db.collection("Users").document(Uid).update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                Map<FieldPath,Object> updates= new HashMap<>();
+//                updates.put(FieldPath.of(str), FieldValue.delete());
+//                Log.d("Update","new update map=" + updates);
+                db.collection("Users").document(Uid).update(FieldPath.of(str), FieldValue.delete()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
