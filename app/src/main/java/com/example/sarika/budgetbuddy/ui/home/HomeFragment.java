@@ -218,6 +218,7 @@ class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewH
         holder.categoryName.setText(mList.get(position).getCategoryName());
         holder.budget.setText("Budget: "+mList.get(position).getBudget());
         holder.expense.setText("Expense: "+mList.get(position).getExpense()+"");
+        holder.balance.setText("Balance: "+ (mList.get(position).getBudget() - mList.get(position).getExpense())+"");
         holder.progressBar.setMax(mList.get(position).getBudget());
         holder.progressBar.setProgress(mList.get(position).getExpense());
         //holder.progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
@@ -250,7 +251,7 @@ class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewH
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView categoryName, budget, expense,percent,warning;
+        TextView categoryName, budget, expense,percent,warning,balance;
         RelativeLayout parentLayout;
         ProgressBar progressBar;
         public ViewHolder(@NonNull View itemView) {
@@ -258,6 +259,7 @@ class HomeRecyclerAdapter extends RecyclerView.Adapter<HomeRecyclerAdapter.ViewH
             categoryName=itemView.findViewById(R.id.category_name);
             budget=itemView.findViewById(R.id.budget);
             expense=itemView.findViewById(R.id.expense);
+            balance = itemView.findViewById(R.id.remaining);
             parentLayout=itemView.findViewById(R.id.parent_layout);
             progressBar=itemView.findViewById(R.id.progress_bar);
             percent=itemView.findViewById(R.id.percent);
